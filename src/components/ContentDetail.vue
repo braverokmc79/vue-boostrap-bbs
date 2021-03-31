@@ -27,6 +27,17 @@
     </b-col>
   </b-row>
 
+
+ <b-row class="mt-2">
+    <b-col sm="2">
+      <label for="textarea-default">수정일:</label>
+    </b-col>
+    <b-col sm="10">
+       <b-form-input v-model="updatedAt" readonly ></b-form-input>
+    </b-col>
+  </b-row>
+   
+
   <b-row class="mt-2">
     <b-col sm="2">
       <label for="textarea-large">내용:</label>
@@ -35,7 +46,7 @@
       <b-form-textarea      
         size="lg"
         rows="10"
-        
+        v-model="context"
       ></b-form-textarea>
     </b-col>
   </b-row>
@@ -73,13 +84,16 @@ export default{
       title:contentData.title,
       context:contentData.context,
       user:data.User.filter(item=>item.user_id===contentData.user_id)[0].name,
-      created:contentData.created_at
+      created:contentData.created_at,
+      updatedAt:contentData.updated_at
     }
   },
 
   methods:{
       updateData(){
-
+          this.$router.push({
+             path: `/board/free/create/${this.contentId}`
+          })
       },
 
       deleteData(){
