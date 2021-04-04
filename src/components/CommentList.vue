@@ -2,7 +2,7 @@
   <div>		
 	  <div  v-for="item in comments" :key="item.comment_id"> 
 	  	<div>
-			  <CommentListItem  :commentObject="item" />
+			  <CommentListItem  :commentObject="item"  :reloadComment="reloadComment" />
 		</div>
 	  </div>
 

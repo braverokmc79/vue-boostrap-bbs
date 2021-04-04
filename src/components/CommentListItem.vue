@@ -9,7 +9,7 @@
       <div class="comment-list-item-context">{{commentObject.context}}</div>
       <div class="comment-list-item-button">
         <b-button variant="info">수정</b-button>
-        <b-button variant="info">삭제</b-button>
+        <b-button variant="info" @click="commentDelete">삭제</b-button>
         <b-button variant="info" @click="subCommentToggle">덧글 달기</b-button>
       </div>
 	</div>
@@ -29,8 +29,8 @@
             </div>
             <div class="comment-list-item-context">{{item.context}}</div>
             <div class="comment-list-item-button">
-              <b-button variant="info">수정</b-button>
-              <b-button variant="info">삭제</b-button>            
+              <b-button variant="info" >수정</b-button>
+              <b-button variant="info"  @click="commentSubDelete(item.subcomment_id)">삭제</b-button>            
             </div>
           </div>
       </div>
@@ -47,7 +47,8 @@ import SubCommentCreate from "@/components/CommentCreate";
 export default {
 	name:"CommentListItem",
 	props:{
-		commentObject:Object
+    commentObject:Object,
+    reloadComment:Function
 	},
 
   components:{
@@ -88,7 +89,36 @@ export default {
       ).map(subCommentItem =>{return {
         ...subCommentItem, user_name:data.User.filter(item=> item.user_id===subCommentItem.user_id)[0].name,
       }})
+    },
+
+    commentDelete(){
+      if(confirm("정말 삭제 하시겠습니까?")){
+        
+        let commentId=this.commentObject.comment_id;
+        let findItem=data.Comment.find(function(item){ return item.comment_id===commentId});
+        let idx=data.Comment.indexOf(findItem);
+        
+        console.log("findItem:");
+        console.dir(findItem);       
+        console.log("idx:"+idx);
+
+        data.Comment.splice(idx, 1);               
+        this.reloadComment();
+      }
+    },
+
+    commentSubDelete(subcommentId){
+       if(confirm("정말 삭제 하시겠습니까?")){ 
+         let findItem=data.SubComment.find(function(item){ return item.subcomment_id==subcommentId});
+         let idx=data.SubComment.indexOf(findItem);
+
+         data.SubComment.splice(idx, 1);
+         this. reloadSubComments();
+      }
     }
+
+
+
 
   }
 

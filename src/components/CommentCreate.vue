@@ -62,7 +62,6 @@ export default {
           created_at:this.currentTime(),
           updated_at:null
         }
-       console.dir(subCommentobj);
 
         data.SubComment.push(
           subCommentobj
