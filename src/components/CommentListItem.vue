@@ -8,11 +8,13 @@
       </div>
       <div class="comment-list-item-context">{{commentObject.context}}</div>
       <div class="comment-list-item-button">
-        <b-button variant="info">수정</b-button>
+        <b-button variant="info"  @click="modalCommentBtn(commentObject)">수정</b-button>
         <b-button variant="info" @click="commentDelete">삭제</b-button>
         <b-button variant="info" @click="subCommentToggle">덧글 달기</b-button>
       </div>
+      
 	</div>
+
 
   <template v-if="subCommentCreateToggle" >
     <SubCommentCreate class="mb-3" :commentId="commentId" :isSubComment="true"  :reloadSubComments="reloadSubComments"  :subCommentToggle="subCommentToggle"  />
@@ -29,41 +31,51 @@
             </div>
             <div class="comment-list-item-context">{{item.context}}</div>
             <div class="comment-list-item-button">
-              <b-button variant="info" >수정</b-button>
+              <b-button variant="info" @click="modalSubCommentBtn(item)" >수정</b-button>
               <b-button variant="info"  @click="commentSubDelete(item.subcomment_id)">삭제</b-button>            
             </div>
           </div>
       </div>
   </template>
 
+
+  <div>
+    <CommentUpdateModal  ref="commentUpdateModal"  :reloadComment="reloadComment" :commentObject="commentObject"  :commentIndex="commentIndex" />   
+  </div>
+
  </div>	
 </template>
+
+
 
 <script>
 import data from "@/data";
 import SubCommentCreate from "@/components/CommentCreate";
+import CommentUpdateModal from "@/Components/CommentUpdateModal";
 
 
 export default {
 	name:"CommentListItem",
 	props:{
     commentObject:Object,
-    reloadComment:Function
+    reloadComment:Function,
+    commentIndex:Number,
 	},
 
   components:{
-    SubCommentCreate
+    SubCommentCreate,
+    CommentUpdateModal
   },
 
 	data(){
 
 		return{
-			 commentId:this.commentObject.comment_id,
+       commentId:this.commentObject.comment_id,
+       modalCommentObject:this.commentObject,
 			// userId:this.commentObject.user_id,
 			// contentId:this.commentObject.content_id,
       // updatedAt:this.commentObject.updated_at,
       
-
       name:data.User.filter(item=> item.user_id===this.commentObject.user_id)[0].name,
       
       subCommentList:data.SubComment.filter(
@@ -113,10 +125,14 @@ export default {
          let idx=data.SubComment.indexOf(findItem);
 
          data.SubComment.splice(idx, 1);
-         this. reloadSubComments();
+         this.reloadSubComments();
       }
-    }
+    },
 
+    modalCommentBtn(commentObject){
+      this.$refs.commentUpdateModal.$refs['my-modal'].hide();
+      this.$refs.commentUpdateModal.$refs['my-modal'].show();
+    },
 
 
 

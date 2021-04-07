@@ -1,21 +1,32 @@
 <template>
   <div>		
-	  <div  v-for="item in comments" :key="item.comment_id"> 
+	  <div  v-for="(item, index)  in comments" :key="item.comment_id"> 
 	  	<div>
-			  <CommentListItem  :commentObject="item"  :reloadComment="reloadComment" />
+			  this index : {{index}}
+			  <CommentListItem  :commentObject="item"  :reloadComment="reloadComment"  :commentIndex="index" />
 		</div>
 	  </div>
+
+	
 
 	<div class="mb-5">
 		<CommentCreate :contentId="contentId" :reloadComment="reloadComment" />
 	 </div>	  
-  </div>  
+
+
+
+
+ 
+
+ 
+	</div>  
 </template>
 
 <script>
 import data from  '@/data';
 import CommentListItem from "@/components/CommentListItem";
 import CommentCreate from "@/components/CommentCreate";
+
 
 export default {
 	name:"CommentList",
@@ -25,7 +36,8 @@ export default {
 
 	components:{
 		CommentListItem,
-		CommentCreate
+		CommentCreate,
+
 	},
 	data(){
 		return {
